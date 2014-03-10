@@ -27,13 +27,14 @@ namespace Tyrant {
             while(!(file.eof())) {
                 file.read(buffer, sizeof(buffer));
                 std::streamsize n = file.gcount();
-                hash.Update((byte*)buffer, n);
+                assertGT(n,0);
+                hash.Update(reinterpret_cast<byte*>(buffer), static_cast<unsigned int>(n));
             }
             file.close();
             hash.Final(digest);
             std::stringstream ssDigest;
             for(int i = 0; i < CryptoPP::Weak1::MD5::DIGESTSIZE; i++) {
-                ssDigest << std::setw(2) << std::setfill('0') << std::hex << (unsigned int)(digest[i]);
+                ssDigest << std::setw(2) << std::setfill('0') << std::hex << static_cast<unsigned int>(digest[i]);
             }
             hashes[fileName] = ssDigest.str();
         }
