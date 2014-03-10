@@ -4,6 +4,7 @@
     #include <memory>
     #include <set>
     #include <list>
+    #include <vector>
     #include "staticDeckTemplate.h++"
 
     namespace Tyrant {
@@ -16,10 +17,11 @@
                 public:
                     std::multiset<unsigned int> cards;
                 public:
+                    AutoDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
                     AutoDeckTemplate(std::list<unsigned int> const & ids);
                     virtual operator std::string() const;
 
-                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor);
+                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const;
 
                     virtual unsigned int getNumberOfNonCommanderCards() const;
                     virtual unsigned int getCardIdAtIndex(unsigned int index) const;

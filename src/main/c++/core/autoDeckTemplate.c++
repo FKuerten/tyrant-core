@@ -5,6 +5,16 @@
 namespace Tyrant {
     namespace Core {
 
+        AutoDeckTemplate::AutoDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds)
+        : StaticDeckTemplate()
+        {
+            this->commanderId = commanderId;
+            for(unsigned int cardId : cardIds) {
+                this->cards.insert(cardId);
+            }
+        }
+
+
         AutoDeckTemplate::AutoDeckTemplate(std::list<unsigned int> const & ids)
         : StaticDeckTemplate()
         {

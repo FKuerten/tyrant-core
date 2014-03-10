@@ -4,6 +4,15 @@
 namespace Tyrant {
     namespace Core {
 
+        SimpleOrderedDeckTemplate::SimpleOrderedDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds)
+        : StaticDeckTemplate()
+        {
+            this->commanderId = commanderId;
+            for(unsigned int cardId : cardIds) {
+                this->cards.push_back(cardId);
+            }
+        }
+
         SimpleOrderedDeckTemplate::SimpleOrderedDeckTemplate(std::list<unsigned int> const & ids)
         : StaticDeckTemplate()
         {

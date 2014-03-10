@@ -13,5 +13,6 @@ namespace Tyrant {
         , useRaidRules(tristate::UNDEFINED)
         {
         }
+
     }
 }

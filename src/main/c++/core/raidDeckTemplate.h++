@@ -18,7 +18,7 @@ namespace Tyrant {
             RaidDeckTemplate(unsigned int raidId);
             operator std::string() const;
 
-            virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor);
+            virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const;
         };
     }
 }

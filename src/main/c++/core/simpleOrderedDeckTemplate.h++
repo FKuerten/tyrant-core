@@ -3,6 +3,7 @@
 
     #include <memory>
     #include <list>
+    #include <vector>
     #include "staticDeckTemplate.h++"
     #include <visitor/acyclicVisitor.h++>
 
@@ -16,10 +17,11 @@
                 public:
                     std::list<unsigned int> cards;
                 public:
+                    SimpleOrderedDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
                     SimpleOrderedDeckTemplate(std::list<unsigned int> const & ids);
                     virtual operator std::string() const;
 
-                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor);
+                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const;
 
                     virtual unsigned int getNumberOfNonCommanderCards() const;
                     virtual unsigned int getCardIdAtIndex(unsigned int index) const;

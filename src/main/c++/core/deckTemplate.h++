@@ -24,7 +24,7 @@
                      * Visitor stuff.
                      * We use the acyclic visitor pattern.
                      */
-                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) = 0;
+                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const = 0;
             };
 
         }

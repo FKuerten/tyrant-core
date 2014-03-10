@@ -11,6 +11,7 @@
             class MultiDeckTemplate : public DeckTemplate {
                 public:
                     typedef std::shared_ptr<MultiDeckTemplate> Ptr;
+                    typedef std::shared_ptr<MultiDeckTemplate const> ConstPtr;
                     CREATE_VISITOR_INTERFACE(MultiDeckTemplate);
                 private:
                     std::multiset<DeckTemplate::Ptr> decks;
@@ -18,7 +19,7 @@
                     MultiDeckTemplate(std::multiset<DeckTemplate::Ptr> const & decks);
                     virtual operator std::string() const;
 
-                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor);
+                    virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const;
 
                     std::multiset<DeckTemplate::Ptr> const & getDecks() const;
 
