@@ -11,16 +11,20 @@
         namespace Core {
 
             class SimpleOrderedDeckTemplate : public StaticDeckTemplate {
+                private: // type
+                    typedef std::vector<unsigned int> ListType;
+
                 public:
                     typedef std::shared_ptr<SimpleOrderedDeckTemplate> Ptr;
                     CREATE_VISITOR_INTERFACE(SimpleOrderedDeckTemplate);
                 public:
-                    std::list<unsigned int> cards;
+                    ListType cards;
 
                 protected:
                     virtual bool equals2(StaticDeckTemplate const & rhs) const;
                     virtual bool equals2(SimpleOrderedDeckTemplate const & rhs) const;
                     virtual size_t hashCode() const;
+
                 public:
                     SimpleOrderedDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
                     SimpleOrderedDeckTemplate(std::list<unsigned int> const & ids);
