@@ -1,6 +1,7 @@
 #include "autoDeckTemplate.h++"
 #include <errorHandling/assert.h++>
 #include <errorHandling/exceptions.h++>
+#include <boost/functional/hash.hpp>
 
 namespace Tyrant {
     namespace Core {
@@ -131,6 +132,35 @@ namespace Tyrant {
             }
         }
 
+        bool
+        AutoDeckTemplate::equals2(StaticDeckTemplate const & rhs) const
+        {
+            if (AutoDeckTemplate const * rhs2 =
+                dynamic_cast<AutoDeckTemplate const *>
+                    (&rhs)
+               )
+            {
+                return this->equals2(*rhs2);
+            } else {
+                return false;
+            }
+        }
+
+        bool
+        AutoDeckTemplate::equals2(AutoDeckTemplate const & rhs) const
+        {
+            return StaticDeckTemplate::equals2(rhs)
+                && this->commanderId == rhs.commanderId;
+        }
+
+        size_t
+        AutoDeckTemplate::hashCode() const
+        {
+            size_t result = 0;
+            boost::hash_combine(result, this->commanderId);
+            boost::hash_range(result, this->cards.begin(), this->cards.end());
+            return result;
+        }
 
     }
 }

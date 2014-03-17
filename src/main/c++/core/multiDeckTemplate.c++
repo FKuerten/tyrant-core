@@ -1,5 +1,6 @@
 #include "multiDeckTemplate.h++"
 #include <sstream>
+#include <boost/functional/hash.hpp>
 
 namespace Tyrant {
     namespace Core {
@@ -30,6 +31,35 @@ namespace Tyrant {
         }
 
         CREATE_VISITOR_METHOD(MultiDeckTemplate)
+
+        bool
+        MultiDeckTemplate::equals2(DeckTemplate const & rhs) const
+        {
+            if (MultiDeckTemplate const * rhs2 =
+                dynamic_cast<MultiDeckTemplate const *>
+                    (&rhs)
+               )
+            {
+                return this->equals2(*rhs2);
+            } else {
+                return false;
+            }
+        }
+
+        bool
+        MultiDeckTemplate::equals2(MultiDeckTemplate const & rhs) const
+        {
+            return DeckTemplate::equals2(rhs)
+                && this->decks == rhs.decks;
+        }
+
+        size_t
+        MultiDeckTemplate::hashCode() const
+        {
+            size_t result = 0;
+            boost::hash_range(result, this->decks.begin(), this->decks.end());
+            return result;
+        }
 
     }
 }

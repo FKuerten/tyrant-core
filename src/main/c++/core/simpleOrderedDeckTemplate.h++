@@ -16,6 +16,11 @@
                     CREATE_VISITOR_INTERFACE(SimpleOrderedDeckTemplate);
                 public:
                     std::list<unsigned int> cards;
+
+                protected:
+                    virtual bool equals2(StaticDeckTemplate const & rhs) const;
+                    virtual bool equals2(SimpleOrderedDeckTemplate const & rhs) const;
+                    virtual size_t hashCode() const;
                 public:
                     SimpleOrderedDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
                     SimpleOrderedDeckTemplate(std::list<unsigned int> const & ids);

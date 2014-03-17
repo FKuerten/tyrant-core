@@ -16,6 +16,12 @@
                     CREATE_VISITOR_INTERFACE(AutoDeckTemplate);
                 public:
                     std::multiset<unsigned int> cards;
+
+                protected:
+                    virtual bool equals2(StaticDeckTemplate const & rhs) const;
+                    virtual bool equals2(AutoDeckTemplate const & rhs) const;
+                    virtual size_t hashCode() const;
+
                 public:
                     AutoDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
                     AutoDeckTemplate(std::list<unsigned int> const & ids);

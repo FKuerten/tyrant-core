@@ -1,5 +1,6 @@
 #include "simpleOrderedDeckTemplate.h++"
 #include <errorHandling/assert.h++>
+#include <boost/functional/hash.hpp>
 
 namespace Tyrant {
     namespace Core {
@@ -143,6 +144,36 @@ namespace Tyrant {
                 assertEQ(a.commanderId, b.commanderId);
                 return a.cards < b.cards;
             }
+        }
+
+        bool
+        SimpleOrderedDeckTemplate::equals2(StaticDeckTemplate const & rhs) const
+        {
+            if (SimpleOrderedDeckTemplate const * rhs2 =
+                dynamic_cast<SimpleOrderedDeckTemplate const *>
+                    (&rhs)
+               )
+            {
+                return this->equals2(*rhs2);
+            } else {
+                return false;
+            }
+        }
+
+        bool
+        SimpleOrderedDeckTemplate::equals2(SimpleOrderedDeckTemplate const & rhs) const
+        {
+            return StaticDeckTemplate::equals2(rhs)
+                && this->cards == rhs.cards;
+        }
+
+        size_t
+        SimpleOrderedDeckTemplate::hashCode() const
+        {
+            size_t result = 0;
+            boost::hash_combine(result, this->commanderId);
+            boost::hash_range(result, this->cards.begin(), this->cards.end());
+            return result;
         }
 
     }
