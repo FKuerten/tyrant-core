@@ -32,10 +32,10 @@
 
                     virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const;
 
-                    virtual unsigned int getNumberOfNonCommanderCards() const;
-                    virtual unsigned int getCardIdAtIndex(unsigned int index) const;
+                    virtual size_t getNumberOfNonCommanderCards() const;
+                    virtual unsigned int getCardIdAtIndex(size_t index) const;
                     virtual StaticDeckTemplate::Ptr withCommander(unsigned int commanderId) const;
-                    virtual StaticDeckTemplate::Ptr withoutCardAtIndex(unsigned int index) const;
+                    virtual StaticDeckTemplate::Ptr withoutCardAtIndex(size_t index) const;
                     virtual StaticDeckTemplate::Ptr withSwappedCards(size_t i, size_t j) const;
                     virtual StaticDeckTemplate::Ptr withCard(unsigned int cardId) const;
                     virtual StaticDeckTemplate::Ptr withCardAtIndex(unsigned int cardId , size_t index) const;

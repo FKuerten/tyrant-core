@@ -92,8 +92,8 @@ namespace Tyrant {
         Tyrant::Core::StaticDeckTemplate::Ptr
         SimpleOrderedDeckTemplate::withSwappedCards(size_t i, size_t j) const
         {
-            assertLE(0u,i);
-            assertLE(0u,j);
+            assertLE(static_cast<size_t>(0u),i);
+            assertLE(static_cast<size_t>(0u),j);
             assertLT(i, this->cards.size());
             assertLT(j, this->cards.size());
             SimpleOrderedDeckTemplate::Ptr copy(new SimpleOrderedDeckTemplate(*this));

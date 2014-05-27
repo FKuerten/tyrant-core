@@ -27,7 +27,7 @@ namespace Tyrant {
             while(!(file.eof())) {
                 file.read(buffer, sizeof(buffer));
                 std::streamsize n = file.gcount();
-                assertGT(n,0);
+                assertGT(n,0l);
                 hash.Update(reinterpret_cast<byte*>(buffer), static_cast<unsigned int>(n));
             }
             file.close();
