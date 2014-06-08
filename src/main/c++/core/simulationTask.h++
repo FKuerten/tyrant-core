@@ -12,7 +12,7 @@
                 UNDEFINED
             };
 
-            typedef DeckTemplate::Ptr DeckDescription;
+            typedef DeckTemplate::ConstPtr DeckDescription;
             typedef signed int BattlegroundId;
             typedef signed int AchievementId;
 
@@ -31,7 +31,9 @@
 
                 public:
                     SimulationTask();
+
             };
+
         }
     }
 #endif

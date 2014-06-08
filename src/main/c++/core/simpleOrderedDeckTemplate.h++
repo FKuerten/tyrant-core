@@ -1,30 +1,33 @@
-#ifndef TYRANT_CACHE_CORE_AUTODECKTEMPLATE_HPP
-    #define TYRANT_CACHE_CORE_AUTODECKTEMPLATE_HPP
+#ifndef TYRANT_CACHE_CLI_SIMPLEORDEREDDECKTEMPLATE_HPP
+    #define TYRANT_CACHE_CLI_SIMPLEORDEREDDECKTEMPLATE_HPP
 
     #include <memory>
-    #include <set>
     #include <list>
     #include <vector>
     #include "staticDeckTemplate.h++"
+    #include <visitor/acyclicVisitor.h++>
 
     namespace Tyrant {
         namespace Core {
 
-            class AutoDeckTemplate : public StaticDeckTemplate {
+            class SimpleOrderedDeckTemplate : public StaticDeckTemplate {
+                private: // type
+                    typedef std::vector<unsigned int> ListType;
+
                 public:
-                    typedef std::shared_ptr<AutoDeckTemplate> Ptr;
-                    CREATE_VISITOR_INTERFACE(AutoDeckTemplate);
+                    typedef std::shared_ptr<SimpleOrderedDeckTemplate> Ptr;
+                    CREATE_VISITOR_INTERFACE(SimpleOrderedDeckTemplate);
                 public:
-                    std::multiset<unsigned int> cards;
+                    ListType cards;
 
                 protected:
                     virtual bool equals2(StaticDeckTemplate const & rhs) const;
-                    virtual bool equals2(AutoDeckTemplate const & rhs) const;
+                    virtual bool equals2(SimpleOrderedDeckTemplate const & rhs) const;
                     virtual size_t hashCode() const;
 
                 public:
-                    AutoDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
-                    AutoDeckTemplate(std::list<unsigned int> const & ids);
+                    SimpleOrderedDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds);
+                    SimpleOrderedDeckTemplate(std::list<unsigned int> const & ids);
                     virtual operator std::string() const;
 
                     virtual void accept(Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const;
@@ -38,11 +41,11 @@
                     virtual StaticDeckTemplate::Ptr withCardAtIndex(unsigned int cardId , size_t index) const;
                     virtual StaticDeckTemplate::Ptr withReplacedCardAtIndex(unsigned int cardId, size_t index) const;
 
-                    friend bool operator< (AutoDeckTemplate const & a, AutoDeckTemplate const & b);
+                    friend bool operator< (SimpleOrderedDeckTemplate const & a, SimpleOrderedDeckTemplate const & b);
             };
 
-            bool operator< (AutoDeckTemplate const & a, AutoDeckTemplate const & b);
-
+            bool operator< (SimpleOrderedDeckTemplate const & a, SimpleOrderedDeckTemplate const & b);
         }
     }
+
 #endif

@@ -17,6 +17,10 @@
                 public:
                     unsigned int commanderId;
 
+                protected:
+                    virtual bool equals2(DeckTemplate const & rhs) const;
+                    virtual bool equals2(StaticDeckTemplate const & rhs) const = 0;
+
                 public:
                     StaticDeckTemplate();
                     ~StaticDeckTemplate();
