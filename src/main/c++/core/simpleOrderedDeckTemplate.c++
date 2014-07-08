@@ -1,8 +1,19 @@
 #include "simpleOrderedDeckTemplate.h++"
 #include <errorHandling/assert.h++>
+#include <iterator>
+#include <boost/functional/hash.hpp>
 
 namespace Tyrant {
     namespace Core {
+
+        SimpleOrderedDeckTemplate::SimpleOrderedDeckTemplate(unsigned int commanderId, std::vector<unsigned int> const & cardIds)
+        : StaticDeckTemplate()
+        {
+            this->commanderId = commanderId;
+            for(unsigned int cardId : cardIds) {
+                this->cards.push_back(cardId);
+            }
+        }
 
         SimpleOrderedDeckTemplate::SimpleOrderedDeckTemplate(std::list<unsigned int> const & ids)
         : StaticDeckTemplate()
@@ -21,13 +32,9 @@ namespace Tyrant {
             std::stringstream ssString;
             ssString << "ORDERED_IDS:";
             ssString << this->commanderId;
-            for(std::list<unsigned int>::const_iterator iter = this->cards.begin()
-               ;iter != this->cards.end()
-               ;iter++
-               )
-            {
+            for(unsigned int cardId : this->cards) {
                 ssString << ",";
-                ssString << *iter;
+                ssString << cardId;
             }
             return ssString.str();
         }
@@ -51,11 +58,7 @@ namespace Tyrant {
         unsigned int
         SimpleOrderedDeckTemplate::getCardIdAtIndex(size_t index) const
         {
-            std::list<unsigned int>::const_iterator iter = this->cards.begin();
-            for(size_t i = 0u; i < index; i++) {
-                iter++;
-            }
-            return *iter;
+            return this->cards[index];
         }
 
         Tyrant::Core::StaticDeckTemplate::Ptr
@@ -70,10 +73,8 @@ namespace Tyrant {
         SimpleOrderedDeckTemplate::withCardAtIndex(unsigned int cardId, size_t index) const
         {
             SimpleOrderedDeckTemplate::Ptr copy(new SimpleOrderedDeckTemplate(*this));
-            std::list<unsigned int>::iterator iter = copy->cards.begin();
-            for(size_t i = 0u; i < index; i++) {
-                iter++;
-            }
+            ListType::iterator iter = copy->cards.begin();
+            std::advance(iter, index);
             copy->cards.insert(iter,cardId);
             return copy;
         }
@@ -82,10 +83,8 @@ namespace Tyrant {
         SimpleOrderedDeckTemplate::withoutCardAtIndex(size_t index) const
         {
             SimpleOrderedDeckTemplate::Ptr copy(new SimpleOrderedDeckTemplate(*this));
-            std::list<unsigned int>::iterator iter = copy->cards.begin();
-            for(size_t i = 0u; i < index; i++) {
-                iter++;
-            }
+            ListType::iterator iter = copy->cards.begin();
+            std::advance(iter, index);
             copy->cards.erase(iter);
             return copy;
         }
@@ -93,19 +92,13 @@ namespace Tyrant {
         Tyrant::Core::StaticDeckTemplate::Ptr
         SimpleOrderedDeckTemplate::withSwappedCards(size_t i, size_t j) const
         {
+            assertLE(static_cast<size_t>(0u),i);
+            assertLE(static_cast<size_t>(0u),j);
+            assertLT(i, this->cards.size());
+            assertLT(j, this->cards.size());
             SimpleOrderedDeckTemplate::Ptr copy(new SimpleOrderedDeckTemplate(*this));
-            std::list<unsigned int>::iterator iterI = copy->cards.begin();
-            for(size_t ii = 0u; ii < i; ii++) {
-                iterI++;
-            }
-            std::list<unsigned int>::iterator iterJ = copy->cards.begin();
-            for(size_t jj = 0u; jj < j; jj++) {
-                iterJ++;
-            }
-            unsigned int cardAtI = *iterI;
-            unsigned int cardAtJ = *iterJ;
-            *iterI = cardAtJ;
-            *iterJ = cardAtI;
+            copy->cards[i] = this->cards[j];
+            copy->cards[j] = this->cards[i];
             return copy;
         }
 
@@ -113,11 +106,7 @@ namespace Tyrant {
         SimpleOrderedDeckTemplate::withReplacedCardAtIndex(unsigned int cardId, size_t index) const
         {
             SimpleOrderedDeckTemplate::Ptr copy(new SimpleOrderedDeckTemplate(*this));
-            std::list<unsigned int>::iterator iter = copy->cards.begin();
-            for(size_t i = 0u; i < index; i++) {
-                iter++;
-            }
-            *iter = cardId;
+            copy->cards[index] = cardId;
             return copy;
         }
 
@@ -134,6 +123,36 @@ namespace Tyrant {
                 assertEQ(a.commanderId, b.commanderId);
                 return a.cards < b.cards;
             }
+        }
+
+        bool
+        SimpleOrderedDeckTemplate::equals2(StaticDeckTemplate const & rhs) const
+        {
+            if (SimpleOrderedDeckTemplate const * rhs2 =
+                dynamic_cast<SimpleOrderedDeckTemplate const *>
+                    (&rhs)
+               )
+            {
+                return this->equals2(*rhs2);
+            } else {
+                return false;
+            }
+        }
+
+        bool
+        SimpleOrderedDeckTemplate::equals2(SimpleOrderedDeckTemplate const & rhs) const
+        {
+            return StaticDeckTemplate::equals2(rhs)
+                && this->cards == rhs.cards;
+        }
+
+        size_t
+        SimpleOrderedDeckTemplate::hashCode() const
+        {
+            size_t result = 0;
+            boost::hash_combine(result, this->commanderId);
+            boost::hash_range(result, this->cards.begin(), this->cards.end());
+            return result;
         }
 
     }
